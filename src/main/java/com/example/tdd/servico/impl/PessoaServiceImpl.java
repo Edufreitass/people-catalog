@@ -2,6 +2,8 @@ package com.example.tdd.servico.impl;
 
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
+
 import com.example.tdd.modelo.Pessoa;
 import com.example.tdd.modelo.Telefone;
 import com.example.tdd.repository.PessoaRepository;
@@ -10,6 +12,7 @@ import com.example.tdd.servico.exception.TelefoneNaoEncotradoException;
 import com.example.tdd.servico.exception.UnicidadeCpfException;
 import com.example.tdd.servico.exception.UnicidadeTelefoneException;
 
+@Service
 public class PessoaServiceImpl implements PessoaService {
 
 	private PessoaRepository pessoaRepository;
