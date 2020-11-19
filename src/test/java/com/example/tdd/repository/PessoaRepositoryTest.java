@@ -1,7 +1,6 @@
 package com.example.tdd.repository;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Optional;
 
@@ -36,12 +35,31 @@ public class PessoaRepositoryTest {
 		assertThat(pessoa.getNome()).isEqualTo("Cauê");
 		assertThat(pessoa.getCpf()).isEqualTo("38767897100");
 	}
-	
+
 	@Test
 	public void naoDeveEncontrarPessoaDeCPFInexistente() throws Exception {
 		Optional<Pessoa> optional = sut.findByCpf("85165164681");
 
 		assertThat(optional.isPresent()).isFalse();
 	}
-	
+
+	@Test
+	public void deveEncontrarPessoaPeloDddENumeroDeTelefone() throws Exception {
+		Optional<Pessoa> optional = sut.findByTelefoneAndTelefoneNumero("86", "35006330");
+
+		assertThat(optional.isPresent()).isTrue();
+
+		Pessoa pessoa = optional.get();
+		assertThat(pessoa.getCodigo()).isEqualTo(3L);
+		assertThat(pessoa.getNome()).isEqualTo("Cauê");
+		assertThat(pessoa.getCpf()).isEqualTo("38767897100");
+	}
+
+	@Test
+	public void naoDeveEncontrarPessoaCujoDddETelefoneNaoEstejamCadastrados() throws Exception {
+		Optional<Pessoa> optional = sut.findByTelefoneAndTelefoneNumero("80", "22006330");
+
+		assertThat(optional.isPresent()).isFalse();
+	}
+
 }
