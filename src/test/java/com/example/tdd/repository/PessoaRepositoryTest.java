@@ -27,7 +27,7 @@ public class PessoaRepositoryTest {
 	private PessoaRepository sut;
 
 	@Test
-	public void deveProcurarPessoaPeloCPF() throws Exception {
+	void deveProcurarPessoaPeloCPF() throws Exception {
 		Optional<Pessoa> optional = sut.findByCpf("38767897100");
 
 		assertThat(optional.isPresent()).isTrue();
@@ -39,14 +39,14 @@ public class PessoaRepositoryTest {
 	}
 
 	@Test
-	public void naoDeveEncontrarPessoaDeCPFInexistente() throws Exception {
+	void naoDeveEncontrarPessoaDeCPFInexistente() throws Exception {
 		Optional<Pessoa> optional = sut.findByCpf("85165164681");
 
 		assertThat(optional.isPresent()).isFalse();
 	}
 
 	@Test
-	public void deveEncontrarPessoaPeloDddENumeroDeTelefone() throws Exception {
+	void deveEncontrarPessoaPeloDddENumeroDeTelefone() throws Exception {
 		Optional<Pessoa> optional = sut.findByTelefoneAndTelefoneNumero("86", "35006330");
 
 		assertThat(optional.isPresent()).isTrue();
@@ -58,14 +58,14 @@ public class PessoaRepositoryTest {
 	}
 
 	@Test
-	public void naoDeveEncontrarPessoaCujoDddETelefoneNaoEstejamCadastrados() throws Exception {
+	void naoDeveEncontrarPessoaCujoDddETelefoneNaoEstejamCadastrados() throws Exception {
 		Optional<Pessoa> optional = sut.findByTelefoneAndTelefoneNumero("80", "22006330");
 
 		assertThat(optional.isPresent()).isFalse();
 	}
 
 	@Test
-	public void deveFiltrarPessoasPorParteDoNome() throws Exception {
+	void deveFiltrarPessoasPorParteDoNome() throws Exception {
 		PessoaFiltro filtro = new PessoaFiltro();
 		filtro.setNome("a");
 
@@ -75,7 +75,7 @@ public class PessoaRepositoryTest {
 	}
 
 	@Test
-	public void deveFiltrarPessoasPorParteDoCPF() throws Exception {
+	void deveFiltrarPessoasPorParteDoCPF() throws Exception {
 		PessoaFiltro filtro = new PessoaFiltro();
 		filtro.setCpf("78");
 
@@ -85,7 +85,7 @@ public class PessoaRepositoryTest {
 	}
 
 	@Test
-	public void deveFiltrarPessoasPorFiltroComposto() throws Exception {
+	void deveFiltrarPessoasPorFiltroComposto() throws Exception {
 		PessoaFiltro filtro = new PessoaFiltro();
 		filtro.setNome("a");
 		filtro.setCpf("78");
@@ -96,7 +96,7 @@ public class PessoaRepositoryTest {
 	}
 
 	@Test
-	public void deveFiltrarPessoasPeloDddDoTelefone() throws Exception {
+	void deveFiltrarPessoasPeloDddDoTelefone() throws Exception {
 		PessoaFiltro filtro = new PessoaFiltro();
 		filtro.setDdd("21");
 
@@ -106,7 +106,7 @@ public class PessoaRepositoryTest {
 	}
 
 	@Test
-	public void deveFiltrarPessoasPeloNumeroDoTelefone() throws Exception {
+	void deveFiltrarPessoasPeloNumeroDoTelefone() throws Exception {
 		PessoaFiltro filtro = new PessoaFiltro();
 		filtro.setTelefone("997504");
 

@@ -38,7 +38,7 @@ public class PessoaServiceTest {
 	private Telefone telefone;
 
 	@BeforeEach
-	public void setUp() throws Exception {
+	void setUp() throws Exception {
 		sut = new PessoaServiceImpl(pessoaRepository);
 
 		pessoa = new Pessoa();
@@ -53,33 +53,33 @@ public class PessoaServiceTest {
 	}
 
 	@Test
-	public void deveSalvarPessoaNoRepositorio() throws Exception {
+	void deveSalvarPessoaNoRepositorio() throws Exception {
 		sut.salvar(pessoa);
 
 		verify(pessoaRepository).save(pessoa);
 	}
 
 	@Test
-	public void naoDeveSalvarDuasPessoasComOMesmoCPF() throws Exception {
+	void naoDeveSalvarDuasPessoasComOMesmoCPF() throws Exception {
 		when(pessoaRepository.findByCpf(CPF)).thenReturn(Optional.of(pessoa));
 
 		assertThrows(UnicidadeCpfException.class, () -> sut.salvar(pessoa));
 	}
 
 	@Test
-	public void naoDeveSalvarDuasPessoaComOMesmoTelefone() throws Exception {
+	void naoDeveSalvarDuasPessoaComOMesmoTelefone() throws Exception {
 		when(pessoaRepository.findByTelefoneAndTelefoneNumero(DDD, NUMERO)).thenReturn(Optional.of(pessoa));
 
 		assertThrows(UnicidadeTelefoneException.class, () -> sut.salvar(pessoa));
 	}
 
 	@Test
-	public void deveRetornarExcecaoDeNaoEncontradoQuandoNaoExistirPessoaComODddENumeroDeTelefone() throws Exception {
+	void deveRetornarExcecaoDeNaoEncontradoQuandoNaoExistirPessoaComODddENumeroDeTelefone() throws Exception {
 		assertThrows(TelefoneNaoEncotradoException.class, () -> sut.buscarPorTelefone(telefone));
 	}
 
 	@Test
-	public void deveProcurarPessoaPeloDddENumeroDoTelefone() throws Exception {
+	void deveProcurarPessoaPeloDddENumeroDoTelefone() throws Exception {
 		when(pessoaRepository.findByTelefoneAndTelefoneNumero(DDD, NUMERO)).thenReturn(Optional.of(pessoa));
 
 		Pessoa pessoaTeste = sut.buscarPorTelefone(telefone);
