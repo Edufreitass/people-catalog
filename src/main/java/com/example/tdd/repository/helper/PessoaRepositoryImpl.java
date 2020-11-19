@@ -26,10 +26,12 @@ public class PessoaRepositoryImpl implements PessoaRepositoryQueries {
 		final StringBuilder sb = new StringBuilder();
 		final Map<String, Object> params = new HashMap<>();
 
-		sb.append("SELECT p FROM Pessoa p WHERE 1=1");
+		sb.append("SELECT p FROM Pessoa p JOIN p.telefones t WHERE 1=1");
 
 		preencherNomeSeNecessario(filtro, sb, params);
 		preencherCPFSeNecessario(filtro, sb, params);
+		preencherDddSeNecessario(filtro, sb, params);
+		preencherNumeroTelefoneSeNecessario(filtro, sb, params);
 
 		Query query = manager.createQuery(sb.toString(), Pessoa.class);
 		preencherParametroDaQuery(params, query);
@@ -37,10 +39,26 @@ public class PessoaRepositoryImpl implements PessoaRepositoryQueries {
 		return query.getResultList();
 	}
 
+	private void preencherNumeroTelefoneSeNecessario(PessoaFiltro filtro, final StringBuilder sb,
+			final Map<String, Object> params) {
+		if (StringUtils.hasText(filtro.getTelefone())) {
+			sb.append(" AND t.numero = :numero ");
+			params.put("numero", filtro.getTelefone());
+		}
+	}
+
+	private void preencherDddSeNecessario(PessoaFiltro filtro, final StringBuilder sb,
+			final Map<String, Object> params) {
+		if (StringUtils.hasText(filtro.getDdd())) {
+			sb.append(" AND t.ddd = :ddd ");
+			params.put("ddd", filtro.getDdd());
+		}
+	}
+
 	private void preencherCPFSeNecessario(PessoaFiltro filtro, final StringBuilder sb,
 			final Map<String, Object> params) {
 		if (StringUtils.hasText(filtro.getCpf())) {
-			sb.append("AND p.cpf LIKE :cpf");
+			sb.append(" AND p.cpf LIKE :cpf ");
 			params.put("cpf", "%" + filtro.getCpf() + "%");
 		}
 	}
@@ -48,7 +66,7 @@ public class PessoaRepositoryImpl implements PessoaRepositoryQueries {
 	private void preencherNomeSeNecessario(PessoaFiltro filtro, final StringBuilder sb,
 			final Map<String, Object> params) {
 		if (StringUtils.hasText(filtro.getNome())) {
-			sb.append("AND p.nome LIKE :nome");
+			sb.append(" AND p.nome LIKE :nome ");
 			params.put("nome", "%" + filtro.getNome() + "%");
 		}
 	}
