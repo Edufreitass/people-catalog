@@ -7,8 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.example.tdd.modelo.Pessoa;
+import com.example.tdd.repository.helper.PessoaRepositoryQueries;
 
-public interface PessoaRepository extends JpaRepository<Pessoa, Long> {
+public interface PessoaRepository extends JpaRepository<Pessoa, Long>, PessoaRepositoryQueries {
 
 	Optional<Pessoa> findByCpf(String cpf);
 

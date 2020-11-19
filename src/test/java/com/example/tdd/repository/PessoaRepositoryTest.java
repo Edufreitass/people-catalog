@@ -2,6 +2,7 @@ package com.example.tdd.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.example.tdd.modelo.Pessoa;
+import com.example.tdd.repository.filtro.PessoaFiltro;
 
 @Sql(value = "/load-database.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @Sql(value = "/clean-database.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
@@ -60,6 +62,26 @@ public class PessoaRepositoryTest {
 		Optional<Pessoa> optional = sut.findByTelefoneAndTelefoneNumero("80", "22006330");
 
 		assertThat(optional.isPresent()).isFalse();
+	}
+
+	@Test
+	public void deveFiltrarPessoasPorParteDoNome() throws Exception {
+		PessoaFiltro filtro = new PessoaFiltro();
+		filtro.setNome("a");
+
+		List<Pessoa> pessoas = sut.filtrar(filtro);
+
+		assertThat(pessoas.size()).isEqualTo(3);
+	}
+
+	@Test
+	public void deveFiltrarPessoasPorParteDoCPF() throws Exception {
+		PessoaFiltro filtro = new PessoaFiltro();
+		filtro.setCpf("78");
+
+		List<Pessoa> pessoas = sut.filtrar(filtro);
+
+		assertThat(pessoas.size()).isEqualTo(3);
 	}
 
 }
