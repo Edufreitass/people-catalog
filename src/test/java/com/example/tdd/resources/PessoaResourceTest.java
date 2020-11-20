@@ -70,4 +70,29 @@ public class PessoaResourceTest extends PeopleCatalogApplicationTests {
 		
 	}
 	
+	@Test
+	void naoDeveSalvarDuasPessoasComOMesmoCPF() throws Exception {
+		final Pessoa pessoa = new Pessoa();
+		pessoa.setNome("Fernanda");
+		pessoa.setCpf("72788740417");
+		
+		final Telefone telefone = new Telefone();
+		telefone.setDdd("67");
+		telefone.setNumero("37132848");
+		
+		pessoa.adicionaTelefone(telefone);
+		
+		given()
+				.request()
+				.header("Accept", ContentType.ANY)
+				.header("Content-type", ContentType.JSON)
+				.body(pessoa)
+		.when()
+		.post("/pessoas")
+		.then()
+				.log().body().and()
+				.statusCode(HttpStatus.BAD_REQUEST.value())
+				.body("message", equalTo("Já existe pessoa cadastrada com o CPF '72788740417'"));
+	}
+	
 }
