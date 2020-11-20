@@ -1,6 +1,7 @@
 package com.example.tdd.resource;
 
 import java.net.URI;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -17,6 +18,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.tdd.modelo.Pessoa;
 import com.example.tdd.modelo.Telefone;
+import com.example.tdd.repository.PessoaRepository;
+import com.example.tdd.repository.filtro.PessoaFiltro;
 import com.example.tdd.servico.PessoaService;
 import com.example.tdd.servico.exception.TelefoneNaoEncontradoException;
 import com.example.tdd.servico.exception.UnicidadeCpfException;
@@ -28,6 +31,9 @@ public class PessoaResource {
 
 	@Autowired
 	private PessoaService service;
+	
+	@Autowired
+	private PessoaRepository repository;
 
 	@GetMapping("/{ddd}/{numero}")
 	public ResponseEntity<Pessoa> buscarPorDddENumeroTelefone(@PathVariable String ddd, 
@@ -51,6 +57,12 @@ public class PessoaResource {
 		response.setHeader("Location", uri.toASCIIString());
 		
 		return new ResponseEntity<>(pessoaSalva, HttpStatus.CREATED);
+	}
+	
+	@PostMapping("/filtrar")
+	public ResponseEntity<List<Pessoa>> filtrar(@RequestBody PessoaFiltro filtro) {
+		final List<Pessoa> pessoas = repository.filtrar(filtro);
+		return new ResponseEntity<>(pessoas, HttpStatus.OK);
 	}
 	
 }
