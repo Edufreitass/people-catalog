@@ -16,7 +16,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import com.example.tdd.modelo.Pessoa;
 import com.example.tdd.modelo.Telefone;
 import com.example.tdd.repository.PessoaRepository;
-import com.example.tdd.servico.exception.TelefoneNaoEncotradoException;
+import com.example.tdd.servico.exception.TelefoneNaoEncontradoException;
 import com.example.tdd.servico.exception.UnicidadeCpfException;
 import com.example.tdd.servico.exception.UnicidadeTelefoneException;
 import com.example.tdd.servico.impl.PessoaServiceImpl;
@@ -75,7 +75,13 @@ public class PessoaServiceTest {
 
 	@Test
 	void deveRetornarExcecaoDeNaoEncontradoQuandoNaoExistirPessoaComODddENumeroDeTelefone() throws Exception {
-		assertThrows(TelefoneNaoEncotradoException.class, () -> sut.buscarPorTelefone(telefone));
+		assertThrows(TelefoneNaoEncontradoException.class, () -> sut.buscarPorTelefone(telefone));
+	}
+	
+	@Test
+	void deveRetornarDadosDoTelefoneDentroDaExcecaoDeTelefoneNaoEncontradoException() throws Exception {
+		TelefoneNaoEncontradoException e = assertThrows(TelefoneNaoEncontradoException.class, () -> sut.buscarPorTelefone(telefone));
+		assertEquals("Não existe pessoa com o telefone (" + DDD + ")" + NUMERO, e.getMessage());
 	}
 
 	@Test

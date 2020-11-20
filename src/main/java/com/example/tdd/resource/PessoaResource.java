@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.tdd.modelo.Pessoa;
 import com.example.tdd.modelo.Telefone;
 import com.example.tdd.servico.PessoaService;
-import com.example.tdd.servico.exception.TelefoneNaoEncotradoException;
+import com.example.tdd.servico.exception.TelefoneNaoEncontradoException;
 
 @RestController
 @RequestMapping("/pessoas")
@@ -21,14 +21,15 @@ public class PessoaResource {
 	private PessoaService service;
 
 	@GetMapping("/{ddd}/{numero}")
-	public ResponseEntity<Pessoa> buscarPorDddENumeroTelefone(@PathVariable String ddd, @PathVariable String numero) throws TelefoneNaoEncotradoException {
+	public ResponseEntity<Pessoa> buscarPorDddENumeroTelefone(@PathVariable String ddd, 
+															  @PathVariable String numero) throws TelefoneNaoEncontradoException {
 		final Telefone telefone = new Telefone();
 		telefone.setDdd(ddd);
 		telefone.setNumero(numero);
 
 		final Pessoa pessoa = service.buscarPorTelefone(telefone);
 
-		return new ResponseEntity<Pessoa>(pessoa, HttpStatus.OK);
+		return new ResponseEntity<>(pessoa, HttpStatus.OK);
 	}
 
 }

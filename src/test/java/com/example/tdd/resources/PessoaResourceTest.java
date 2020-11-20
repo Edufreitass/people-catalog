@@ -24,4 +24,16 @@ public class PessoaResourceTest extends PeopleCatalogApplicationTests {
 						"cpf", equalTo("38767897100"));
 	}
 	
+	@Test
+	void deveRetornarErroNaoEncontradoQuandoBuscarPessoaPorTelefoneInexistente() throws Exception {
+		given()
+				.pathParam("ddd", "99")
+				.pathParam("numero", "987654321")
+		.get("/pessoas/{ddd}/{numero}")
+		.then()
+				.log().body().and()
+				.statusCode(HttpStatus.NOT_FOUND.value())
+				.body("message", equalTo("Não existe pessoa com o telefone (99)987654321"));
+	}
+	
 }
